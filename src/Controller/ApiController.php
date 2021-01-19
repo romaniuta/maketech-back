@@ -16,6 +16,11 @@ class ApiController extends AbstractController
 {
     /**
      * @Route("/api/home", methods={"GET"})
+     * @param OrganizationsRepository $repository
+     * @param UserInterface $user
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * This method is responsible for getting the organizational user in home page
      */
     public function home(OrganizationsRepository $repository,UserInterface $user)
     {
@@ -28,6 +33,11 @@ class ApiController extends AbstractController
 
     /**
      * @Route("/api/create", methods={"POST"})
+     * @param Request $request
+     * @param UserInterface $user
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * This method is responsible for create organization
      */
     public function createOrganization(Request $request, UserInterface $user)
     {

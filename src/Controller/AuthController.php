@@ -13,12 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 class AuthController extends AbstractController
 {
 
     /**
      * @Route("/auth/register", name="register", methods={"POST"})
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     *
+     * This method is responsible for user registration
      */
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
@@ -37,6 +42,12 @@ class AuthController extends AbstractController
 
     /**
      * @Route("/auth/login", name="login", methods={"POST"})
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $encoder
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * This method is responsible for user authorization
      */
     public function login(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder)
     {
