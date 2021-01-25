@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Organizations;
-use App\Entity\User;
 use App\Repository\OrganizationsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -22,7 +21,7 @@ class ApiController extends AbstractController
      *
      * This method is responsible for getting the organizational user in home page
      */
-    public function home(OrganizationsRepository $repository,UserInterface $user)
+    public function home(OrganizationsRepository $repository,UserInterface $user) : JsonResponse
     {
       $allOrg = $repository->findAllUserOrganization($user->getId());
 
@@ -34,23 +33,23 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/create", methods={"POST"})
      * @param Request $request
-     * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *
-     * This method is responsible for create organization
+     * This method is responsible for create organizationgit
      */
-    public function createOrganization(Request $request, UserInterface $user)
+    public function createOrganization(Request $request) : JsonResponse
     {
         $content = json_decode($request->getContent());
-        if ($content->name === null) {
+
+        if ($content->userId === null) {
             return $this->json([
                'message' => 'error'
             ]);
         }
 
         $org = new Organizations();
-        $org->setName($content->name);
-        $org->setAdminId($user->getId());
+        $org->setName($content->companyName);
+        $org->setAdminId($content->userId);
         $em = $this->getDoctrine()->getManager();
         $em->persist($org);
         $em->flush();
